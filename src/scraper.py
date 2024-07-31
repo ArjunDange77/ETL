@@ -38,7 +38,7 @@ def parse_team_stats(html: str) -> List[dict]:
     unique_data = set()
     data = []
     
-    for row in rows[1:]:  # Skip header row
+    for row in rows[1:]:
         cols = row.find_all('td')
         if not cols:
             logging.error(f"No columns found in row: {row}")
@@ -52,13 +52,12 @@ def parse_team_stats(html: str) -> List[dict]:
             continue
         
         try:
-            # Fetching data directly without additional calculations
             team = columns_text[0]
             year = int(columns_text[1]) if columns_text[1] else None
             wins = int(columns_text[2]) if columns_text[2] else 0
             losses = int(columns_text[3]) if columns_text[3] else 0
             ot_losses = int(columns_text[4]) if columns_text[4] else 0
-            win_percentage = columns_text[5]  # Assuming this is provided as is
+            win_percentage = columns_text[5]
             goals_for = int(columns_text[6]) if columns_text[6] else 0
             goals_against = int(columns_text[7]) if columns_text[7] else 0
             plus_minus = int(columns_text[8]) if columns_text[8] else 0
@@ -104,7 +103,6 @@ def scrape_all_pages() -> List[dict]:
         logging.debug(f"Scraped {len(data)} rows from page {page_num}")
         page_num += 1
     
-    # Save HTML pages to zip
     with zipfile.ZipFile("data.zip", "w", zipfile.ZIP_DEFLATED) as zip_file:
         for file_name, content in html_pages:
             zip_file.writestr(file_name, content)
